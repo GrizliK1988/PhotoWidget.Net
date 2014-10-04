@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using Ninject;
 using PhotoWidget.Models;
 using PhotoWidget.Service.Repository;
 
@@ -8,27 +9,27 @@ namespace PhotoWidget.Controllers
 {
     public class GalleryController : ApiController
     {
-        public IGalleryRepository<Gallery, uint> galleryRepository  = new GalleryRepository();
+        [Inject]
+        public IGalleryRepository<Gallery, uint> GalleryRepository { get; set; }
 
         public IEnumerable<Gallery> Get()
         {
-            return galleryRepository.Get();
+            return GalleryRepository.Get();
         }
 
         public Gallery Get(uint id)
         {
-            return galleryRepository.Get(id);
+            return GalleryRepository.Get(id);
         }
 
         public Gallery Post(Gallery gallery)
         {
-            gallery.CreatedDate = DateTime.Now;
-            return galleryRepository.Save(gallery);
+            return GalleryRepository.Save(gallery);
         }
 
         public void Delete(uint id)
         {
-            galleryRepository.Delete(id);
+            GalleryRepository.Delete(id);
         }
     }
 }

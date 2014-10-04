@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PhotoWidget.Models;
 
@@ -27,6 +28,7 @@ namespace PhotoWidget.Service.Repository
             else
             {
                 entity.Id = _galleries.Length > 0 ? _galleries.Select(g => g.Id).Max() + 1 : 1;
+                entity.CreatedDate = DateTime.Now;
             }
 
             var galleriesList = _galleries.ToList();
