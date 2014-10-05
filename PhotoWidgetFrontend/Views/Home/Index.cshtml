@@ -5,4 +5,17 @@
 
 <h2>Home</h2>
 
-<div id="content"></div>
+<div id="content">
+    <div class="row" id="El_Galleries_GalleryCollectionView"></div>
+</div>
+
+<script type="text/template" id="Template_Galleries_GalleryItemView">
+    <div class="thumbnail">
+        <img data-src="holder.js/100%x200" alt="<%= Name %>" id="gallery-image-<%= Id %>">
+        <div class="caption">
+            <h3 contenteditable="true" data-name="Name"><%= Name %></h3>
+            <p contenteditable="true" data-name="Description"><%= Description %></p>
+            <p><a href="#" class="btn btn-success" role="button" data-role="save">Save</a> <a href="#" class="btn btn-danger" role="button" data-role="delete">Delete</a></p>
+        </div>
+    </div>
+</script>

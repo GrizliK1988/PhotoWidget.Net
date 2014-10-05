@@ -86,8 +86,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="JsApp\Apps\GalleriesApp.js" />
+    <Content Include="JsApp\Models\Gallery\GalleryModel.js" />
+    <Content Include="JsApp\Models\Gallery\GalleryCollection.js" />
+    <Content Include="JsApp\Modules\ApiRouterModule.js" />
     <Content Include="JsApp\Modules\GalleriesModule.js" />
     <Content Include="JsApp\RequireJSConfig.js" />
+    <Content Include="JsApp\Views\Galleries\GalleryCollectionView.js" />
+    <Content Include="JsApp\Views\Galleries\GalleryItemView.js" />
     <Content Include="Scripts\backbone.js" />
     <Content Include="Scripts\backbone.marionette.js" />
     <Content Include="Scripts\backbone.marionette.min.js" />
@@ -96,9 +101,14 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\backbone.min.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\holder.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\underscore.js" />
@@ -133,7 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="JsApp\Views\Galleries\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>

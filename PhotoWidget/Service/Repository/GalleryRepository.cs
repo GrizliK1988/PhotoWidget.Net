@@ -11,7 +11,7 @@ namespace PhotoWidget.Service.Repository
 
         public IEnumerable<Gallery> Get()
         {
-            return _galleries;
+            return _galleries.OrderBy(g => g.Id);
         }
 
         public Gallery Get(uint id)

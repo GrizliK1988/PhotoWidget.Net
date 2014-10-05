@@ -27,6 +27,12 @@ namespace PhotoWidget.Controllers
             return GalleryRepository.Save(gallery);
         }
 
+        public Gallery Put(uint id, Gallery gallery)
+        {
+            gallery.Id = id;
+            return GalleryRepository.Save(gallery);
+        }
+
         public void Delete(uint id)
         {
             GalleryRepository.Delete(id);

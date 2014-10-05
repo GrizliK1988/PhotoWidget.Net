@@ -3,8 +3,11 @@
     paths: {
         'apps': '/JsApp/Apps',
         'modules': '/JsApp/Modules',
+        'views': '/JsApp/Views',
+        'models': '/JsApp/Models',
 
-        'jquery': 'jquery-1.10.2.min'
+        'jquery': 'jquery-1.10.2.min',
+        'moment': 'moment-with-locales'
     },
     shim: {
         'backbone': {
@@ -19,7 +22,7 @@
             exports: '_'
         },
         'bootstrap': {
-            deps: ['jquery']
+            deps: ['jquery', 'holder']
         }
     }
 });
