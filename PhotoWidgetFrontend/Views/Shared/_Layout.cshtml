@@ -10,58 +10,7 @@
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <header id="myCarousel" class="carousel slide">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
-
-        <!-- Wrapper for Slides -->
-        <div class="carousel-inner">
-            <div class="item active">
-                <!-- Set the first background image using inline CSS below. -->
-                <div class="fill">
-                    <div class="container body-content">
-                        @RenderBody()
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <!-- Set the second background image using inline CSS below. -->
-                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Two');"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 2</h2>
-                </div>
-            </div>
-            <div class="item">
-                <!-- Set the third background image using inline CSS below. -->
-                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Three');"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 3</h2>
-                </div>
-            </div>
-        </div>
-
-    </header>
+    @RenderBody()
 
     <script src="~/Scripts/require.js" data-main="/JsApp/RequireJSConfig.js"></script>
     <script>
