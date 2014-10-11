@@ -1,22 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Nest;
 using PhotoWidget.Models;
 
 namespace PhotoWidget.Service.Repository
 {
     public class GalleryRepository : IGalleryRepository<Gallery, uint>
     {
-        private static Gallery[] _galleries = {};
+        private readonly ElasticClient _client;
+
+        private const string ElasticIndex = "galleries";
+        private const string ElasticType = "current";
+
+        public GalleryRepository()
+        {
+            var node = new Uri("http://localhost:9200");
+            var settings = new ConnectionSettings(node, ElasticIndex);
+            _client = new ElasticClient(settings);
+        }
 
         public IEnumerable<Gallery> Get()
         {
-            return _galleries.OrderBy(g => g.Id);
+            return _client.Search<Gallery>(
+                s => s
+                    .Query(q => q.MatchAll())
+                    .SortAscending(o => o.CreatedDate)
+                ).Documents;
         }
 
         public Gallery Get(uint id)
         {
-            return _galleries.FirstOrDefault(g => g.Id == id);
+            return _client.Search<Gallery>(
+                s => s.Query(q => q.Term(f => f.Id, id))
+                ).Documents.First();
         }
 
         public Gallery Save(Gallery entity)
@@ -27,13 +45,15 @@ namespace PhotoWidget.Service.Repository
             }
             else
             {
-                entity.Id = _galleries.Length > 0 ? _galleries.Select(g => g.Id).Max() + 1 : 1;
+                var result = _client.Search<Gallery>(
+                    s => s.Aggregations(a => a.Max("id_max", m => m.Field(p => p.Id)))
+                    );
+                var maxId = result.Aggs.Max("id_max");
+                entity.Id = maxId != null && maxId.Value != null ? (uint)maxId.Value + 1 : 1;
                 entity.CreatedDate = DateTime.Now;
             }
 
-            var galleriesList = _galleries.ToList();
-            galleriesList.Add(entity);
-            _galleries = galleriesList.ToArray();
+            _client.Index(entity);
 
             return entity;
         }
@@ -45,7 +65,7 @@ namespace PhotoWidget.Service.Repository
 
         public void Delete(uint id)
         {
-            _galleries = _galleries.Where(g => g.Id != id).ToArray();
+            _client.Delete<Gallery>(id);
         }
     }
 }

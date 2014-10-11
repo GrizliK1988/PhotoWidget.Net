@@ -16,3 +16,7 @@ textarea {
     max-width: 280px;
 }
 
+[contenteditable=true]:empty:before {
+  content: attr(data-placeholder);
+    color: #999;
+}

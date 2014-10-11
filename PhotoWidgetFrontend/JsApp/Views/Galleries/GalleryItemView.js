@@ -12,16 +12,17 @@
 
         ui: {
             name: '[data-name="Name"]',
-            description: '[data-name="Description"]'
+            description: '[data-name="Description"]',
+            holderJsImage: '[data-src^="holder"]'
         },
 
-        initialize: function() {
+        initialize: function(options) {
             this.bindUIElements();
         },
 
         onRender: function () {
             _.delay((function() {
-                Holder.run({ images: "#gallery-image-" + this.model.id });
+                Holder.run({ images: this.ui.holderJsImage[0] });
             }).bind(this), 0);
         },
 
@@ -39,7 +40,7 @@
             this.model.save({
                 Name: this.ui.name.html(),
                 Description: this.ui.description.html()
-            });
+            }, { wait: true });
         },
 
         del: function() {

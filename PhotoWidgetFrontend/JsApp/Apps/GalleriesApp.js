@@ -7,4 +7,8 @@
     });
 
     GalleriesApp.start();
+
+    $('.carousel').carousel({
+        interval: 0
+    });
 });
