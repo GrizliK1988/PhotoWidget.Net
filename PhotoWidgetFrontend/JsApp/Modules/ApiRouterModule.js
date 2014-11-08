@@ -8,6 +8,8 @@
                     return baseUrl + 'gallery';
                 case 'getGallery':
                     return baseUrl + 'gallery/' + params.id;
+                case 'uploadImages':
+                    return baseUrl + 'galleryimage';
                 default:
                     return action;
             }

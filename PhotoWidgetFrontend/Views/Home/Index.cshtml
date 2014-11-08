@@ -22,14 +22,14 @@
 <header id="myCarousel" class="carousel slide">
     <!-- Indicators -->
     <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="0"></li>
+        <li data-target="#myCarousel" data-slide-to="1" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
     </ol>
 
     <!-- Wrapper for Slides -->
     <div class="carousel-inner">
-        <div class="item active">
+        <div class="item">
             <!-- Set the first background image using inline CSS below. -->
             <div class="fill">
                 <div class="container body-content">
@@ -37,10 +37,28 @@
                 </div>
             </div>
         </div>
-        <div class="item">
+        <div class="item active">
             <!-- Set the second background image using inline CSS below. -->
             <div class="fill">
                 <div class="container body-content">
+                    <h2>Images upload</h2>
+
+                    <div class="row" id="El_ImagesGallery_GalleryImageUploadItemView">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Click or drag images here</h3>
+                                </div>
+                                <div class="panel-body" id="imagesFileUploadArea" style="min-height: 400px; cursor: pointer">
+                                    <div id="El_ImagesGallery_GalleryImageCollectionView"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <form id="imagesFileUploadForm">
+                                    <input style="display: none" id="imagesFileUpload" type="file" name="images" multiple>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,3 +72,10 @@
     </div>
 
 </header>
+
+<script type="text/template" id="Template_GalleryImages_GalleryImageItemView">
+    <div class="thumbnail" style="margin-bottom: 10px;">
+        <img src="<%= Source %>">
+    </div>
+</script>
+

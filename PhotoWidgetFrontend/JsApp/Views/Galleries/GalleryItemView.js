@@ -20,12 +20,6 @@
             this.bindUIElements();
         },
 
-        onRender: function () {
-            _.delay((function() {
-                Holder.run({ images: this.ui.holderJsImage[0] });
-            }).bind(this), 0);
-        },
-
         onSaveBtnClick: function(e) {
             e.preventDefault();
             this.save();

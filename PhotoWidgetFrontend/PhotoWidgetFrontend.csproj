@@ -82,14 +82,18 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dropzone.css" />
     <Content Include="Content\full-slider.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="images\spritemap%402x.png" />
+    <Content Include="images\spritemap.png" />
     <Content Include="JsApp\Apps\GalleriesApp.js" />
     <Content Include="JsApp\Models\Gallery\GalleryModel.js" />
     <Content Include="JsApp\Models\Gallery\GalleryCollection.js" />
     <Content Include="JsApp\Modules\ApiRouterModule.js" />
+    <Content Include="JsApp\Modules\ImagesGalleryModule.js" />
     <Content Include="JsApp\Modules\GalleriesModule.js" />
     <Content Include="JsApp\RequireJSConfig.js" />
     <Content Include="JsApp\Views\Galleries\GalleryCollectionView.js" />
@@ -102,7 +106,11 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\backbone.min.map" />
+    <Content Include="Content\stylus\basic.styl" />
+    <Content Include="Content\stylus\dropzone.styl" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\dropzone-amd-module.js" />
+    <Content Include="Scripts\dropzone.js" />
     <Content Include="Scripts\holder.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

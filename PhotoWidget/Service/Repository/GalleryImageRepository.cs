@@ -7,64 +7,59 @@ using PhotoWidget.Models;
 
 namespace PhotoWidget.Service.Repository
 {
-    public class GalleryRepository : IGalleryRepository<Gallery, uint>
+    public class GalleryImageRepository : IGalleryImageRepository<GalleryImage, string>
     {
         private readonly ElasticClient _client;
 
         private const string ElasticIndex = "galleries";
 
-        public GalleryRepository()
+        public GalleryImageRepository()
         {
             var node = new Uri("http://localhost:9200");
             var settings = new ConnectionSettings(node, ElasticIndex);
             _client = new ElasticClient(settings);
         }
 
-        public IEnumerable<Gallery> Get()
+        public IEnumerable<GalleryImage> Get()
         {
-            return _client.Search<Gallery>(
+            return _client.Search<GalleryImage>(
                 s => s
                     .Query(q => q.MatchAll())
                     .SortAscending(o => o.CreatedDate)
                 ).Documents;
         }
 
-        public Gallery Get(uint id)
+        public GalleryImage Get(string id)
         {
-            return _client.Search<Gallery>(
-                s => s.Query(q => q.Term(f => f.Id, id))
-                ).Documents.First();
+            var response = _client.Get<GalleryImage>(id);
+            return response.Source;
         }
 
-        public Gallery Save(Gallery entity)
+        public GalleryImage Save(GalleryImage entity)
         {
-            if (entity.Id > 0)
+            if (entity.Id != null)
             {
                 Delete(entity);
             }
             else
             {
-                var result = _client.Search<Gallery>(
-                    s => s.Aggregations(a => a.Max("id_max", m => m.Field(p => p.Id)))
-                    );
-                var maxId = result.Aggs.Max("id_max");
-                entity.Id = maxId != null && maxId.Value != null ? (uint)maxId.Value + 1 : 1;
                 entity.CreatedDate = DateTime.Now;
             }
 
-            _client.Index(entity);
+            var response = _client.Index(entity);
+            entity.Id = response.Id;
 
             return entity;
         }
 
-        public void Delete(Gallery entity)
+        public void Delete(GalleryImage entity)
         {
             Delete(entity.Id);
         }
 
-        public void Delete(uint id)
+        public void Delete(string id)
         {
-            _client.Delete<Gallery>(id);
+            _client.Delete<GalleryImage>(id);
         }
     }
 }

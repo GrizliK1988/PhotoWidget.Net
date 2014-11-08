@@ -69,6 +69,7 @@ namespace PhotoWidget.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IGalleryRepository<Gallery, uint>>().To<GalleryRepository>();
+            kernel.Bind<IGalleryImageRepository<GalleryImage, string>>().To<GalleryImageRepository>();
         }
     }
 }

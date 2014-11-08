@@ -20,6 +20,13 @@ namespace PhotoWidget
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional },
+                constraints: new { id = @"\d*" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "ControllerActionApi",
+                routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }
