@@ -7,7 +7,8 @@
 
         events: {
             'click [data-role="save"]': 'onSaveBtnClick',
-            'click [data-role="delete"]': 'onDeleteBtnClick'
+            'click [data-role="delete"]': 'onDeleteBtnClick',
+            'click [data-role="images"]': 'onImagesBtnClick'
         },
 
         ui: {
@@ -28,6 +29,10 @@
         onDeleteBtnClick: function (e) {
             e.preventDefault();
             this.del();
+        },
+
+        onImagesBtnClick: function() {
+
         },
 
         save: function () {

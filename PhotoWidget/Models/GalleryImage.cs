@@ -10,6 +10,8 @@ namespace PhotoWidget.Models
         [System.ComponentModel.DefaultValue(null)]
         public string Id { get; set; }
 
+        public uint GalleryId { get; set; }
+
         public string Name { get; set; }
 
         public string MimeType { get; set; }

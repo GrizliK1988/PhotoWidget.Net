@@ -29,6 +29,15 @@ namespace PhotoWidget.Service.Repository
                 ).Documents;
         }
 
+        public IEnumerable<GalleryImage> GetForGallery(uint galleryId)
+        {
+            return _client.Search<GalleryImage>(
+                s => s
+                    .Query(q => q.Term("galleryId", galleryId))
+                    .SortAscending(o => o.CreatedDate)
+                ).Documents;
+        }
+
         public GalleryImage Get(string id)
         {
             var response = _client.Get<GalleryImage>(id);

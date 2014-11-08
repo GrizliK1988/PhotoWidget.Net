@@ -5,6 +5,7 @@
         'modules': '/JsApp/Modules',
         'views': '/JsApp/Views',
         'models': '/JsApp/Models',
+        'routers': '/JsApp/Router',
 
         'jquery': 'jquery-1.10.2.min',
         'moment': 'moment-with-locales'

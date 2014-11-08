@@ -38,8 +38,15 @@
             'change @ui.uploadControl': 'onFilesSelected'
         },
 
+        galleryId: null,
+
         initialize: function() {
             this.bindUIElements();
+        },
+
+        setGalleryId: function(id) {
+            this.galleryId = id;
+            this.collection.reset([]);
         },
 
         openFileDialog: function() {
@@ -71,6 +78,7 @@
             _.each(files, (function (file, key) {
                 data.append(key, file);
             }).bind(this));
+            data.append('galleryId', this.galleryId);
 
             $.ajax({
                 url: _.apiUrl('uploadImages'),
@@ -82,7 +90,6 @@
                 dataType: 'json'
             })
                 .success(function() {
-
                 })
                 .error(function() {
                     alert('Error!');
@@ -92,26 +99,35 @@
     });
 
     return Marionette.Module.extend({
+        galleryId: null,
+
         initialize: function () {
             this.galleryImages = new GalleryImageCollection([]);
-            this.galleryImagesView = new GalleryImageCollectionView({
+            new GalleryImageCollectionView({
                 collection: this.galleryImages
             });
 
             this.galleryImageUploadView = new GalleryImageUploadItemView({
                 collection: this.galleryImages
             });
+        },
 
+        openGallery: function(id) {
+            this.galleryId = id;
+            this.galleryImageUploadView.setGalleryId(id);
             this.getGalleryImages();
         },
 
         getGalleryImages: function() {
             var that = this;
 
-            $.get(_.apiUrl('uploadImages'))
+            $.get(_.apiUrl('galleryImages', {id: this.galleryId}))
                 .success(function(images) {
                     _.each(images, function(image) {
-                        //that.galleryImages.add(image);
+                        image.Source = _.apiUrl('image', {
+                            id: image.Id
+                        });
+                        that.galleryImages.add(image);
                     });
                 });
         }

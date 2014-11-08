@@ -17,7 +17,11 @@
         <div class="caption">
             <h3 data-placeholder="Name" contenteditable="true" data-name="Name"><%= Name %></h3>
             <p data-placeholder="Description" contenteditable="true" data-name="Description"><%= Description %></p>
-            <p><a href="#" class="btn btn-success" role="button" data-role="save">Save</a> <a href="#" class="btn btn-danger" role="button" data-role="delete">Delete</a></p>
+            <p>
+                <a href="#gallery/<%= Id %>" class="btn btn-primary" role="button" data-role="images">Images</a>
+                <a href="#" class="btn btn-success" role="button" data-role="save">Save</a>
+                <a href="#" class="btn btn-danger" role="button" data-role="delete">Delete</a>
+            </p>
         </div>
     </div>
 </script>

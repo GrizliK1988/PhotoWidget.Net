@@ -26,6 +26,11 @@ namespace PhotoWidget.Controllers
 
         public IEnumerable<GalleryImage> Get()
         {
+            if (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["gallery"]))
+            {
+                return GalleryImageRepository.GetForGallery(Convert.ToUInt32(HttpContext.Current.Request.QueryString["gallery"]));
+            }
+
             return GalleryImageRepository.Get();
         }
 
@@ -73,7 +78,8 @@ namespace PhotoWidget.Controllers
             {
                 MimeType = postedFile.ContentType,
                 Extension = Path.GetExtension(postedFile.FileName),
-                Name = postedFile.FileName
+                Name = postedFile.FileName,
+                GalleryId = Convert.ToUInt32(HttpContext.Current.Request["galleryId"])
             });
             var imageName = savedImage.Id + Path.GetExtension(postedFile.FileName);
 
