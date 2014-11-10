@@ -21,9 +21,12 @@
         interval: 0
     });
 
+    GalleriesApp.vent.on('gallery:list:show', function(args) {
+        carousel.carousel(0);
+    });
+
     GalleriesApp.vent.on('gallery:images_page:show', function(args) {
         carousel.carousel(1);
-
         GalleriesApp.module('ImagesGallery').openGallery(args.id);
     });
 

@@ -43,6 +43,8 @@
                 <div class="container body-content">
                     <h2>Images upload</h2>
 
+                    <a href="#">Galleries</a>
+
                     <div class="row" id="El_ImagesGallery_GalleryImageUploadItemView">
                         <div class="col-md-12">
                             <div class="panel panel-primary">
@@ -75,6 +77,7 @@
 
 <script type="text/template" id="Template_GalleryImages_GalleryImageItemView">
     <div class="thumbnail" style="margin-bottom: 10px;">
+        <span class="pull-left"><%= Name %></span> <a class="close" data-role="removeImage" href="#">×</a>
         <img src="<%= Source %>">
     </div>
 </script>
