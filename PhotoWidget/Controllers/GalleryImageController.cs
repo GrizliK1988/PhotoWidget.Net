@@ -93,5 +93,10 @@ namespace PhotoWidget.Controllers
 
             return savedImage;
         }
+
+        public void Delete(string id)
+        {
+            GalleryImageRepository.Delete(id);
+        }
     }
 }
