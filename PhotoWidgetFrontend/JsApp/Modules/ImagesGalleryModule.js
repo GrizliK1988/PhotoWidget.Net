@@ -26,17 +26,8 @@
         },
 
         getGalleryImages: function() {
-            var that = this;
-
-            $.get(_.apiUrl('galleryImages', {id: this.galleryId}))
-                .success(function(images) {
-                    _.each(images, function(image) {
-                        image.Source = _.apiUrl('image', {
-                            id: image.Id
-                        });
-                        that.galleryImages.add(image);
-                    });
-                });
+            this.galleryImages.url = _.apiUrl('galleryImages', {id: this.galleryId});
+            this.galleryImages.fetch();
         }
     });
 });

@@ -1,6 +1,7 @@
 using System.Web.Http;
 using PhotoWidget.Models;
 using PhotoWidget.Service.Repository;
+using PhotoWidget.Service.Serializer;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(PhotoWidget.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(PhotoWidget.App_Start.NinjectWebCommon), "Stop")]
@@ -70,6 +71,7 @@ namespace PhotoWidget.App_Start
         {
             kernel.Bind<IGalleryRepository<Gallery, uint>>().To<GalleryRepository>();
             kernel.Bind<IGalleryImageRepository<GalleryImage, string>>().To<GalleryImageRepository>();
+            kernel.Bind(typeof (ISerializer<>)).To(typeof (JsonSerializer<>)).Named("JsonSerializer");
         }
     }
 }

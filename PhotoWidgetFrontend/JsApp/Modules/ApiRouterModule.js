@@ -13,6 +13,8 @@
                     return baseUrl + 'galleryimage';
                 case 'galleryImages':
                     return baseUrl + 'galleryimage?gallery=' + params.id;
+                case 'deleteImage':
+                    return baseUrl + 'galleryimage/delete';
                 case 'image':
                     return baseImageApiUrl + 'image/' + params.id;
                 default:
