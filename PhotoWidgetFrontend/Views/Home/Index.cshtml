@@ -41,26 +41,7 @@
             <!-- Set the second background image using inline CSS below. -->
             <div class="fill">
                 <div class="container body-content">
-                    <h2>Images upload</h2>
-
-                    <a href="#">Galleries</a>
-
-                    <div class="row" id="El_ImagesGallery_GalleryImageUploadItemView">
-                        <div class="col-md-12">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Click or drag images here</h3>
-                                </div>
-                                <div class="panel-body" id="imagesFileUploadArea" style="min-height: 400px; cursor: pointer">
-                                    <div id="El_ImagesGallery_GalleryImageCollectionView"></div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <form id="imagesFileUploadForm">
-                                    <input style="display: none" id="imagesFileUpload" type="file" name="images" multiple>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    @Html.Partial("GalleryImages")
                 </div>
             </div>
         </div>

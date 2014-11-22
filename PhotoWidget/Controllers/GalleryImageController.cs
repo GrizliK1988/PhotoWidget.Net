@@ -83,7 +83,7 @@ namespace PhotoWidget.Controllers
             });
             var imageName = savedImage.Id + Path.GetExtension(postedFile.FileName);
 
-            const string imagePath = "UserId" + "/" + "GalleryId";
+            var imagePath = "UserId" + "/" + savedImage.GalleryId;
             var serverImagePath = HttpContext.Current.Server.MapPath(UploadsBasePath + imagePath);
             Directory.CreateDirectory(serverImagePath);
 

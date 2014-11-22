@@ -1,6 +1,5 @@
 ﻿define(['underscore'], function (_) {
     var baseUrl = 'http://localhost:2368/api/';
-    var baseImageApiUrl = 'http://localhost:2368/api/galleryimage/';
 
     _.mixin({
         apiUrl: function(action, params) {
@@ -16,7 +15,9 @@
                 case 'deleteImage':
                     return baseUrl + 'galleryimage/delete';
                 case 'image':
-                    return baseImageApiUrl + 'image/' + params.id;
+                    return baseUrl + 'galleryimage/image/' + params.id;
+                case 'galleryCode':
+                    return baseUrl + 'gallerycode/' + params.id;
                 default:
                     return action;
             }

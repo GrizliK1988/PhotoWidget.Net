@@ -23,11 +23,18 @@
             this.galleryId = id;
             this.galleryImageUploadView.setGalleryId(id);
             this.getGalleryImages();
+            this.displayGalleryCode();
         },
 
         getGalleryImages: function() {
             this.galleryImages.url = _.apiUrl('galleryImages', {id: this.galleryId});
             this.galleryImages.fetch();
+        },
+
+        displayGalleryCode: function() {
+            var url = _.apiUrl('galleryCode', {id: this.galleryId});
+            $('#gallery-code').val('<div id="photo-widget-slider"></div>' + "\n"
+                                    + '<script src="' + url + '"></script>');
         }
     });
 });
