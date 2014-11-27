@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Runtime.Remoting.Channels;
-using System.Text;
 using System.Web;
 using System.Web.Http;
 using Ninject;
 using PhotoWidget.Models;
+using PhotoWidget.Service.Helper;
 using PhotoWidget.Service.Repository;
+using DrawingImage = System.Drawing.Image;
 
 namespace PhotoWidget.Controllers
 {
@@ -90,6 +89,10 @@ namespace PhotoWidget.Controllers
             postedFile.SaveAs(serverImagePath + "\\" + imageName);
             savedImage.Source = imagePath + "/" + imageName;
             GalleryImageRepository.Save(savedImage);
+
+            var image = DrawingImage.FromFile(serverImagePath + "\\" + imageName);
+            var resizedImage = ImageHelper.Resize(image, new Size(200, 300));
+            ImageHelper.SaveJpeg(serverImagePath + "\\" + savedImage.Id + "_200_300" + Path.GetExtension(postedFile.FileName), new Bitmap(resizedImage), 100);
 
             return savedImage;
         }

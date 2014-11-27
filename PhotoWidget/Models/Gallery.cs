@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 
@@ -14,6 +15,21 @@ namespace PhotoWidget.Models
 
         public string Description { get; set; }
 
+        public GallerySettings Settings { get; set; }
+
         public DateTime CreatedDate { get; set; }
+
+        public DateTime UpdatedDate { get; set; }
+    }
+
+    public class GallerySettings
+    {
+        public ImageSize ImagesSize { get; set; }
+    }
+
+    public class ImageSize
+    {
+        public float Width { get; set; }
+        public float Height { get; set; }
     }
 }

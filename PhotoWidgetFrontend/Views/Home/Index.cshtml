@@ -47,14 +47,43 @@
         </div>
         <div class="item">
             <!-- Set the third background image using inline CSS below. -->
-            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Three');"></div>
-            <div class="carousel-caption">
-                <h2>Caption 3</h2>
+            <div class="fill">
+                <div class="container body-content">
+                    <h2>Gallery Settings</h2>
+
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <a class="btn btn-primary" href="#"><i class="glyphicon glyphicon-arrow-left"></i> Galleries</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-10 top15">
+                            <form data-role="form" id="El_GallerySettings_GallerySettingsFormItemView">
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 </header>
+
+<script type="text/template" id="Template_GallerySettings_GallerySettingsFormItemView">
+    <% console.log(model); %>
+    <div class="form-group">
+        <label for="imageWidth">Image width</label>
+        <input type="number" class="form-control" id="imageWidth" placeholder="Enter images width"
+               data-field="Width" value="<%= model.get('Settings').get('ImagesSize').get('Width') %>">
+    </div>
+    <div class="form-group">
+        <label for="imageHeight">Image height</label>
+        <input type="number" class="form-control" id="imageHeight" placeholder="Enter images height"
+               data-field="Height" value="<%= model.get('Settings').get('ImagesSize').get('Height') %>">
+    </div>
+    <a class="btn btn-primary" href="#" data-role="submit">Save</a>
+</script>
 
 <script type="text/template" id="Template_GalleryImages_GalleryImageItemView">
     <div class="thumbnail" style="margin-bottom: 10px;">

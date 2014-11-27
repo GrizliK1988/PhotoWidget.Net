@@ -2,7 +2,8 @@
     return Backbone.Router.extend({
         routes: {
             "": "galleryList",
-            "gallery/:id": "gallery"
+            "gallery/:id": "gallery",
+            "gallery/settings/:id": "gallerySettings"
         },
 
         initialize: function(app) {
@@ -15,6 +16,10 @@
 
         gallery: function(id) {
             this.app.vent.trigger('gallery:images_page:show', {id: id});
+        },
+
+        gallerySettings: function(id) {
+            this.app.vent.trigger('gallery:settings_page:show', {id: id});
         }
     });
 });

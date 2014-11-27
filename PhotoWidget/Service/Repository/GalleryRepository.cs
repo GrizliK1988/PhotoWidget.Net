@@ -33,14 +33,14 @@ namespace PhotoWidget.Service.Repository
         {
             return _client.Search<Gallery>(
                 s => s.Query(q => q.Term(f => f.Id, id))
-                ).Documents.First();
+                ).Documents.FirstOrDefault();
         }
 
         public Gallery Save(Gallery entity)
         {
             if (entity.Id > 0)
             {
-                Delete(entity);
+                //Delete(entity);
             }
             else
             {
@@ -52,7 +52,13 @@ namespace PhotoWidget.Service.Repository
                 entity.CreatedDate = DateTime.Now;
             }
 
-            _client.Index(entity);
+            entity.UpdatedDate = DateTime.Now;
+            var resultSave = _client.Index(entity);
+
+            if (resultSave.ServerError != null)
+            {
+                throw new Exception(resultSave.ServerError.Error);
+            }
 
             return entity;
         }
