@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -37,7 +38,16 @@ namespace PhotoWidget.Service.Helper
             var ratio = relativeWidth < relativeHeight ? relativeWidth : relativeHeight;
 
             var destinationWidth = (int)(sourceWidth * ratio);
+            if (Math.Abs(destinationWidth - newSize.Width) < 2)
+            {
+                destinationWidth = newSize.Width;
+            }
+
             var destinationHeight = (int)(sourceHeight * ratio);
+            if (Math.Abs(destinationHeight - newSize.Height) < 2)
+            {
+                destinationHeight = newSize.Height;
+            }
 
             var b = new Bitmap(destinationWidth, destinationHeight);
             var g = Graphics.FromImage(b);

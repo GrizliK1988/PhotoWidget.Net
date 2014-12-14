@@ -21,32 +21,75 @@ namespace PhotoWidget.Models
 
         public string Source { get; set; }
 
-        public Size Size { get; set; }
+        public ImageSize Size { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
-        public GalleryImageThumb[] Thumbs { get; set; }
+        private GalleryImageThumb[] _thumbs;
 
-        public GalleryImageThumb FindSuitableThumb(Size thumbSize)
+        public GalleryImageThumb[] Thumbs
         {
-            return
-                Thumbs.Where(s => SizesDiffMultiplication(s.Size, thumbSize) > 0)
-                    .OrderBy(t => SizesDiffMultiplication(t.Size, thumbSize))
-                    .FirstOrDefault();
+            get { return _thumbs ?? new GalleryImageThumb[] {}; }
+            set { _thumbs = value; }
         }
 
-        private static float SizesDiffMultiplication(Size size1, Size size2)
+        public GalleryImageThumb FindSuitableThumb(ImageSize thumbSize, int maxDiff = -1)
         {
-            return (size1 - size2).Height * (size1 - size2).Width;
+            if (thumbSize == null)
+            {
+                return null;
+            }
+
+            var thumb = Thumbs
+                    .OrderBy(t => SizesDiffMultiplication(t.Size, thumbSize))
+                    .FirstOrDefault();
+
+            if (thumb == null)
+            {
+                return null;
+            }
+
+            return maxDiff > -1 && SizesDiffMultiplication(thumb.Size, thumbSize) > maxDiff ? null : thumb;
+        }
+
+        private static float SizesDiffMultiplication(ImageSize size1, ImageSize size2)
+        {
+            return Math.Abs((size1 - size2).Height * (size1 - size2).Width);
         }
     }
 
     public class GalleryImageThumb
     {
-        public Size Size { get; set; }
+        public ImageSize Size { get; set; }
 
         public string Source { get; set; }
 
         public DateTime CreatedDate { get; set; }
+    }
+
+    public class ImageSize
+    {
+        public float Width { get; set; }
+        public float Height { get; set; }
+
+        public static ImageSize operator +(ImageSize size1, ImageSize size2)
+        {
+            var size = new ImageSize()
+            {
+                Height = size1.Height + size2.Height,
+                Width = size1.Width + size2.Width
+            };
+            return size;
+        }
+
+        public static ImageSize operator -(ImageSize size1, ImageSize size2)
+        {
+            var size = new ImageSize()
+            {
+                Height = size1.Height - size2.Height,
+                Width = size1.Width - size2.Width
+            };
+            return size;
+        }
     }
 }

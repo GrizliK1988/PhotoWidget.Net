@@ -26,10 +26,4 @@ namespace PhotoWidget.Models
     {
         public ImageSize ImagesSize { get; set; }
     }
-
-    public class ImageSize
-    {
-        public float Width { get; set; }
-        public float Height { get; set; }
-    }
 }
