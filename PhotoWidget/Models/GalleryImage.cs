@@ -33,23 +33,11 @@ namespace PhotoWidget.Models
             set { _thumbs = value; }
         }
 
-        public GalleryImageThumb FindSuitableThumb(ImageSize thumbSize, int maxDiff = -1)
+        public GalleryImageThumb FindSuitableThumb(ImageSize thumbSize)
         {
-            if (thumbSize == null)
-            {
-                return null;
-            }
-
-            var thumb = Thumbs
-                    .OrderBy(t => SizesDiffMultiplication(t.Size, thumbSize))
-                    .FirstOrDefault();
-
-            if (thumb == null)
-            {
-                return null;
-            }
-
-            return maxDiff > -1 && SizesDiffMultiplication(thumb.Size, thumbSize) > maxDiff ? null : thumb;
+            return Thumbs
+                .OrderBy(t => SizesDiffMultiplication(t.Size, thumbSize))
+                .FirstOrDefault();
         }
 
         private static float SizesDiffMultiplication(ImageSize size1, ImageSize size2)
@@ -90,6 +78,11 @@ namespace PhotoWidget.Models
                 Width = size1.Width - size2.Width
             };
             return size;
+        }
+
+        public Size ToSize()
+        {
+            return new Size((int)Width, (int)Height);
         }
     }
 }

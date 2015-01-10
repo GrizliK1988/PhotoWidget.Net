@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
+using DrawingImage = System.Drawing.Image;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -28,7 +30,21 @@ namespace PhotoWidget.Service.Helper
             return codecs.FirstOrDefault(c => c.MimeType == mimeType);
         }
 
-        public static Image Resize(Image imageToResize, Size newSize)
+        public static DrawingImage Resize(DrawingImage imageToResize, Size newSize)
+        {
+            var thumbSize = CalculateThumbSize(imageToResize, newSize);
+
+            var b = new Bitmap(thumbSize.Width, thumbSize.Height);
+            var g = Graphics.FromImage(b);
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+            g.DrawImage(imageToResize, 0, 0, thumbSize.Width, thumbSize.Height);
+            g.Dispose();
+
+            return b;
+        }
+
+        private static Size CalculateThumbSize(DrawingImage imageToResize, Size newSize)
         {
             var sourceWidth = imageToResize.Width;
             var sourceHeight = imageToResize.Height;
@@ -37,26 +53,33 @@ namespace PhotoWidget.Service.Helper
             var relativeHeight = (float)newSize.Height / sourceHeight;
             var ratio = relativeWidth < relativeHeight ? relativeWidth : relativeHeight;
 
-            var destinationWidth = (int)(sourceWidth * ratio);
-            if (Math.Abs(destinationWidth - newSize.Width) < 2)
+            var destinationWidth = CalculateDestinationDimension(sourceWidth, ratio, newSize.Width);
+            var destinationHeight = CalculateDestinationDimension(sourceHeight, ratio, newSize.Height);
+
+            return new Size(destinationWidth, destinationHeight);
+        }
+
+        private static int CalculateDestinationDimension(float sourceDimension, float ratio, int desiredDimension)
+        {
+            var dimension = (int)(sourceDimension * ratio);
+            return Math.Abs(dimension - desiredDimension) < 2 ? desiredDimension : dimension;
+        }
+
+        public static string GetImageExtension(DrawingImage image)
+        {
+            var encoder = ImageCodecInfo.GetImageEncoders().FirstOrDefault(x => x.FormatID == image.RawFormat.Guid);
+            if (encoder == null)
             {
-                destinationWidth = newSize.Width;
+                return null;
             }
 
-            var destinationHeight = (int)(sourceHeight * ratio);
-            if (Math.Abs(destinationHeight - newSize.Height) < 2)
+            var ext = encoder.FilenameExtension.Split(';').FirstOrDefault();
+            if (ext == null)
             {
-                destinationHeight = newSize.Height;
+                return null;
             }
 
-            var b = new Bitmap(destinationWidth, destinationHeight);
-            var g = Graphics.FromImage(b);
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-            g.DrawImage(imageToResize, 0, 0, destinationWidth, destinationHeight);
-            g.Dispose();
-
-            return b;
+            return ext.ToLower().Replace("*.", ".");
         }
     }
 }

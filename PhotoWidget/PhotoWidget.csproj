@@ -173,8 +173,14 @@
     <Compile Include="Models\Gallery.cs" />
     <Compile Include="Models\Public\Gallery.cs" />
     <Compile Include="Models\Public\GalleryImage.cs" />
+    <Compile Include="Models\Service\FileSystemPath.cs" />
+    <Compile Include="Models\StoredGalleryImage.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\Factory\GalleryImageFactory.cs" />
     <Compile Include="Service\Helper\ImageHelper.cs" />
+    <Compile Include="Service\Image\Storage\FileSystemGalleryImageStorage.cs" />
+    <Compile Include="Service\Image\Storage\IGalleryImageStorage.cs" />
     <Compile Include="Service\Repository\GalleryImageRepository.cs" />
     <Compile Include="Service\Repository\GalleryRepository.cs" />
     <Compile Include="Service\Repository\IGalleryImageRepository.cs" />
@@ -192,7 +198,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Service\Security\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

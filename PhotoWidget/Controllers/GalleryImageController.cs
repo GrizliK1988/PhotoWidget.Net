@@ -9,10 +9,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
-using System.Web.UI;
 using Ninject;
 using PhotoWidget.Models;
+using PhotoWidget.Service.Factory;
 using PhotoWidget.Service.Helper;
+using PhotoWidget.Service.Image.Storage;
 using PhotoWidget.Service.Repository;
 using DrawingImage = System.Drawing.Image;
 
@@ -27,6 +28,9 @@ namespace PhotoWidget.Controllers
 
         [Inject]
         public IGalleryRepository<Gallery, uint> GalleryRepository { get; set; }
+
+        [Inject, Named("FS")]
+        public IGalleryImageStorage GalleryImageStorage { get; set; }
 
         public IEnumerable<GalleryImage> Get()
         {
@@ -44,8 +48,7 @@ namespace PhotoWidget.Controllers
             return galleryImage;
         }
 
-        [System.Web.Http.AcceptVerbs("GET")]
-        [System.Web.Http.HttpGet]
+        [AcceptVerbs("GET"), HttpGet]
         public HttpResponseMessage Image(string id)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -61,7 +64,7 @@ namespace PhotoWidget.Controllers
             return result;
         }
 
-        [System.Web.Http.AcceptVerbs("GET"), System.Web.Http.HttpGet, Route("image/{id}", Name="ImagesPublicRoute")]
+        [AcceptVerbs("GET"), HttpGet, Route("image/{id}", Name="ImagesPublicRoute")]
         public HttpResponseMessage ImagePublic(string id)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -69,15 +72,14 @@ namespace PhotoWidget.Controllers
             var galleryImage = GalleryImageRepository.Get(id);
 
             var gallery = GalleryRepository.Get(galleryImage.GalleryId);
-            var thumb = galleryImage.FindSuitableThumb(gallery.Settings.ImagesSize, 0);
+            var thumb = galleryImage.FindSuitableThumb(gallery.Settings.ImagesSize);
 
             var path = HttpContext.Current.Server.MapPath(UploadsBasePath + "/" + galleryImage.Source);
 
             if (thumb == null)
             {
-                var size = gallery.Settings.ImagesSize;
                 var image = new Bitmap(path);
-                var newThumb = ImageHelper.Resize(image, new Size((int)size.Width, (int)size.Height));
+                var newThumb = ImageHelper.Resize(image, gallery.Settings.ImagesSize.ToSize());
 
                 var thumbPath = HttpContext.Current.Server.MapPath(UploadsBasePath + "/" + galleryImage.Source.Replace(".jpg", "_thump.jpg"));
                 ImageHelper.SaveJpeg(thumbPath, new Bitmap(newThumb), 100);
@@ -134,26 +136,16 @@ namespace PhotoWidget.Controllers
 
         private GalleryImage UploadImage(HttpPostedFile postedFile)
         {
-            var savedImage = GalleryImageRepository.Save(new GalleryImage
-            {
-                MimeType = postedFile.ContentType,
-                Extension = Path.GetExtension(postedFile.FileName),
-                Name = postedFile.FileName,
-                GalleryId = Convert.ToUInt32(HttpContext.Current.Request["galleryId"])
-            });
-            var imageName = savedImage.Id + Path.GetExtension(postedFile.FileName);
+            var galleryId = HttpContext.Current.Request["galleryId"];
+            var galleryIdUint = Convert.ToUInt32(galleryId);
 
-            var imagePath = "UserId" + "/" + savedImage.GalleryId;
-            var serverImagePath = HttpContext.Current.Server.MapPath(UploadsBasePath + imagePath);
-            Directory.CreateDirectory(serverImagePath);
+            var newGalleryImage = GalleryImageFactory.Create(galleryIdUint, postedFile);
+            var savedImage = GalleryImageRepository.Save(newGalleryImage);
 
-            postedFile.SaveAs(serverImagePath + "\\" + imageName);
-            savedImage.Source = imagePath + "/" + imageName;
+            var storedImage = GalleryImageStorage.Store(galleryIdUint, savedImage.Id, new Bitmap(postedFile.InputStream));
+            savedImage.Source = storedImage.Path;
+
             GalleryImageRepository.Save(savedImage);
-
-            var image = DrawingImage.FromFile(serverImagePath + "\\" + imageName);
-            var resizedImage = ImageHelper.Resize(image, new Size(200, 300));
-            ImageHelper.SaveJpeg(serverImagePath + "\\" + savedImage.Id + "_200_300" + Path.GetExtension(postedFile.FileName), new Bitmap(resizedImage), 100);
 
             return savedImage;
         }

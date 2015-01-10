@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoWidget", "PhotoWidget\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoWidgetFrontend", "PhotoWidgetFrontend\PhotoWidgetFrontend.csproj", "{598F29FA-AF18-4263-BD3A-E68CD60447E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceUnitTests", "ServiceUnitTests\ServiceUnitTests.csproj", "{8291A235-CC07-4EFB-ABEC-65C813345EB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{598F29FA-AF18-4263-BD3A-E68CD60447E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{598F29FA-AF18-4263-BD3A-E68CD60447E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{598F29FA-AF18-4263-BD3A-E68CD60447E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8291A235-CC07-4EFB-ABEC-65C813345EB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8291A235-CC07-4EFB-ABEC-65C813345EB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8291A235-CC07-4EFB-ABEC-65C813345EB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8291A235-CC07-4EFB-ABEC-65C813345EB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

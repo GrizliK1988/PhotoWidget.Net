@@ -1,5 +1,8 @@
+using System.Configuration;
+using System.Web.Configuration;
 using System.Web.Http;
 using PhotoWidget.Models;
+using PhotoWidget.Service.Image.Storage;
 using PhotoWidget.Service.Repository;
 using PhotoWidget.Service.Serializer;
 
@@ -69,9 +72,12 @@ namespace PhotoWidget.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            var imagesBaseServerPath = ConfigurationManager.AppSettings["imagesBaseServerPath"];
+
             kernel.Bind<IGalleryRepository<Gallery, uint>>().To<GalleryRepository>();
             kernel.Bind<IGalleryImageRepository<GalleryImage, string>>().To<GalleryImageRepository>();
             kernel.Bind(typeof (ISerializer<>)).To(typeof (JsonSerializer<>)).Named("JsonSerializer");
+            kernel.Bind<IGalleryImageStorage>().To<FileSystemGalleryImageStorage>().Named("FS").WithConstructorArgument("basePath", imagesBaseServerPath);
         }
     }
 }
