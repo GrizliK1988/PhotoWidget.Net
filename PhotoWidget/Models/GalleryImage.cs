@@ -47,12 +47,10 @@ namespace PhotoWidget.Models
 
         public GalleryImageThumb FindSuitableThumb(ImageSize thumbSize)
         {
-            return Thumbs
-                .OrderBy(t => SizesDiffMultiplication(t.Size, thumbSize))
-                .FirstOrDefault();
+            return Thumbs.FirstOrDefault(t => SizesDiffMultiplication(t.Size, thumbSize) == 0);
         }
 
-        private static float SizesDiffMultiplication(ImageSize size1, ImageSize size2)
+        private static int SizesDiffMultiplication(ImageSize size1, ImageSize size2)
         {
             return Math.Abs((size1 - size2).Height * (size1 - size2).Width);
         }
@@ -76,8 +74,8 @@ namespace PhotoWidget.Models
 
     public class ImageSize
     {
-        public float Width { get; set; }
-        public float Height { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public static ImageSize operator +(ImageSize size1, ImageSize size2)
         {
@@ -101,7 +99,7 @@ namespace PhotoWidget.Models
 
         public Size ToSize()
         {
-            return new Size((int)Width, (int)Height);
+            return new Size(Width, Height);
         }
     }
 }

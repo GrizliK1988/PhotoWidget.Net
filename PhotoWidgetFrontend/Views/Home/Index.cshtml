@@ -88,7 +88,7 @@
 <script type="text/template" id="Template_GalleryImages_GalleryImageItemView">
     <div class="thumbnail" style="margin-bottom: 10px;">
         <span class="pull-left"></span> <a class="close" data-role="removeImage" href="#">×</a>
-        <img src="<%= typeof Id === 'undefined' ? Source : _.apiUrl('image', {id: Id}) %>">
+        <img src="<%= _.isUndefined(Id) ? Source : _.apiUrl('imageThumb', {id: Id, width: 237, height: 178}) %>">
     </div>
 </script>
 

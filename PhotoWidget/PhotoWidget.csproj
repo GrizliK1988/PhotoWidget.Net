@@ -166,6 +166,7 @@
     <Compile Include="Controllers\GalleryCodeController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\GalleryImageController.cs" />
+    <Compile Include="Controllers\GalleryImageThumbController.cs" />
     <Compile Include="Controllers\Public\ImageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

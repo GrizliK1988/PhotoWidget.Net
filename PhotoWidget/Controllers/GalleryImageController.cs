@@ -57,30 +57,6 @@ namespace PhotoWidget.Controllers
             return result;
         }
 
-        [AcceptVerbs("GET"), HttpGet, Route("api/galleryimage/image_thumb/{width}/{height}/{id}", Name = "ImageThumb")]
-        public HttpResponseMessage ImageThumb(int width, int height, string id)
-        {
-            var galleryImage = GalleryImageService.FindImage(id);
-            var existedThumb = galleryImage.FindSuitableThumb(ImageSizeFactory.Create(width, height));
-
-            GalleryImageThumb thumb;
-            if (existedThumb == null)
-            {
-                thumb = GalleryImageService.CreateThumb(galleryImage, new Size(width, height));
-                GalleryImageService.SaveImageWithNewThumb(galleryImage, thumb);
-            }
-            else
-            {
-                thumb = existedThumb;
-            }
-
-            var stream = GalleryImageStorage.ReadToStream(thumb);
-            var result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new StreamContent(stream)};
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue(galleryImage.MimeType);
-
-            return result;
-        }
-
         public GalleryImage[] Post()
         {
             var httpRequest = HttpContext.Current.Request;
