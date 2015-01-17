@@ -33,6 +33,18 @@ namespace PhotoWidget.Models
             set { _thumbs = value; }
         }
 
+        public GalleryImage()
+        {
+            CreatedDate = DateTime.Now;
+        }
+
+        public void AddThumb(GalleryImageThumb thumb)
+        {
+            var thumbsList = _thumbs.ToList();
+            thumbsList.Add(thumb);
+            _thumbs = thumbsList.ToArray();
+        }
+
         public GalleryImageThumb FindSuitableThumb(ImageSize thumbSize)
         {
             return Thumbs
@@ -53,6 +65,13 @@ namespace PhotoWidget.Models
         public string Source { get; set; }
 
         public DateTime CreatedDate { get; set; }
+
+        public GalleryImageThumb(string source, ImageSize size)
+        {
+            Size = size;
+            Source = source;
+            CreatedDate = DateTime.Now;
+        }
     }
 
     public class ImageSize

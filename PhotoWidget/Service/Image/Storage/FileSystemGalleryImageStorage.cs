@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -28,20 +29,23 @@ namespace PhotoWidget.Service.Image.Storage
 
         public StoredGalleryImage Store(uint galleryId, string imageId, System.Drawing.Image image)
         {
-            return StoreImage(galleryId, imageId, image);
+            var ext = ImageHelper.GetImageFormatExtension(image.RawFormat);
+            var imageFileName = MakeImageFileName(imageId, ext);
+
+            var imagePath = GenerateGalleryDirectoryPath(galleryId);
+            CreateDirectoryIfMissed(imagePath);
+            imagePath.GoToFile(imageFileName);
+
+            var path = imagePath.Absolute();
+            image.Save(path);
+
+            return new StoredGalleryImage(imagePath.Web(), StorageType.FileSystem);
         }
 
-        public StoredGalleryImage StoreThumb(uint galleryId, string imageId, System.Drawing.Image image)
+        public StoredGalleryImage StoreThumb(uint galleryId, string imageId, System.Drawing.Image image, ImageFormat imageFormat)
         {
-            return StoreImage(galleryId, imageId, image, true);
-        }
-
-        private StoredGalleryImage StoreImage(uint galleryId, string imageId, System.Drawing.Image image, bool isThumb = false)
-        {
-            var ext = ImageHelper.GetImageExtension(image);
-            var imageFileName = isThumb
-                ? MakeImageThumbFileName(imageId, ext, image.Size)
-                : MakeImageFileName(imageId, ext);
+            var ext = ImageHelper.GetImageFormatExtension(imageFormat);
+            var imageFileName = MakeImageThumbFileName(imageId, ext, image.Size);
 
             var imagePath = GenerateGalleryDirectoryPath(galleryId);
             imagePath.GoToFile(imageFileName);
@@ -51,15 +55,24 @@ namespace PhotoWidget.Service.Image.Storage
             return new StoredGalleryImage(imagePath.Web(), StorageType.FileSystem);
         }
 
-        public System.Drawing.Image Read(StoredGalleryImage galleryImage)
+        public System.Drawing.Image Read(GalleryImage galleryImage)
         {
-            if (galleryImage.StorageType != StorageType.FileSystem)
-            {
-                return null;
-            }
-
-            var imageFileSystemPath = new FileSystemPath(_basePath, galleryImage.Path);
+            var imageFileSystemPath = new FileSystemPath(_basePath, galleryImage.Source);
             return new Bitmap(imageFileSystemPath.Absolute());
+        }
+
+        public Stream ReadToStream(GalleryImage galleryImage)
+        {
+            var imageFileSystemPath = new FileSystemPath(_basePath, galleryImage.Source);
+            var stream = File.OpenRead(imageFileSystemPath.Absolute());
+            return stream;
+        }
+
+        public Stream ReadToStream(GalleryImageThumb thumb)
+        {
+            var imageFileSystemPath = new FileSystemPath(_basePath, thumb.Source);
+            var stream = File.OpenRead(imageFileSystemPath.Absolute());
+            return stream;
         }
 
         private FileSystemPath GenerateGalleryDirectoryPath(uint galleryId)

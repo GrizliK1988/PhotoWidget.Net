@@ -2,6 +2,7 @@ using System.Configuration;
 using System.Web.Configuration;
 using System.Web.Http;
 using PhotoWidget.Models;
+using PhotoWidget.Service.Image.Galllery;
 using PhotoWidget.Service.Image.Storage;
 using PhotoWidget.Service.Repository;
 using PhotoWidget.Service.Serializer;
@@ -78,6 +79,7 @@ namespace PhotoWidget.App_Start
             kernel.Bind<IGalleryImageRepository<GalleryImage, string>>().To<GalleryImageRepository>();
             kernel.Bind(typeof (ISerializer<>)).To(typeof (JsonSerializer<>)).Named("JsonSerializer");
             kernel.Bind<IGalleryImageStorage>().To<FileSystemGalleryImageStorage>().Named("FS").WithConstructorArgument("basePath", imagesBaseServerPath);
+            kernel.Bind<IGalleryImageService>().To<GalleryImageService>();
         }
     }
 }

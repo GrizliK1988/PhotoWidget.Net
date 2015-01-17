@@ -65,9 +65,9 @@ namespace PhotoWidget.Service.Helper
             return Math.Abs(dimension - desiredDimension) < 2 ? desiredDimension : dimension;
         }
 
-        public static string GetImageExtension(DrawingImage image)
+        public static string GetImageFormatExtension(ImageFormat imageFormat)
         {
-            var encoder = ImageCodecInfo.GetImageEncoders().FirstOrDefault(x => x.FormatID == image.RawFormat.Guid);
+            var encoder = ImageCodecInfo.GetImageEncoders().FirstOrDefault(x => x.FormatID == imageFormat.Guid);
             if (encoder == null)
             {
                 return null;

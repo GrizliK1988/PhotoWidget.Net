@@ -166,6 +166,7 @@
     <Compile Include="Controllers\GalleryCodeController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\GalleryImageController.cs" />
+    <Compile Include="Controllers\Public\ImageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -178,7 +179,10 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Factory\GalleryImageFactory.cs" />
+    <Compile Include="Service\Factory\ImageSizeFactory.cs" />
     <Compile Include="Service\Helper\ImageHelper.cs" />
+    <Compile Include="Service\Image\Galllery\GalleryImageService.cs" />
+    <Compile Include="Service\Image\Galllery\IGalleryImageService.cs" />
     <Compile Include="Service\Image\Storage\FileSystemGalleryImageStorage.cs" />
     <Compile Include="Service\Image\Storage\IGalleryImageStorage.cs" />
     <Compile Include="Service\Repository\GalleryImageRepository.cs" />

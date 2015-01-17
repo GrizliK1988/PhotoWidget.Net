@@ -16,6 +16,8 @@
                     return baseUrl + 'galleryimage/delete';
                 case 'image':
                     return baseUrl + 'galleryimage/image/' + params.id;
+                case 'imageThumb':
+                    return baseUrl + 'galleryimage/image_thumb/' + params.width + '/' + params.height + '/' + params.id;
                 case 'galleryCode':
                     return baseUrl + 'gallerycode/' + params.id;
                 default:
