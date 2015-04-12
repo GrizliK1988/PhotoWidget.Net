@@ -8,7 +8,7 @@ namespace PhotoWidget.Service.Repository
 
         T Get(TId id);
 
-        T Save(T entity);
+        void Save(ref T entity);
 
         void Delete(T entity);
 

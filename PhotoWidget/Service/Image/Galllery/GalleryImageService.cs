@@ -32,12 +32,14 @@ namespace PhotoWidget.Service.Image.Galllery
         public GalleryImage SaveImageWithNewThumb(GalleryImage image, GalleryImageThumb thumb)
         {
             image.AddThumb(thumb);
-            return GalleryImageRepository.Save(image);
+            GalleryImageRepository.Save(ref image);
+            return image;
         }
 
         public GalleryImage SaveImage(GalleryImage image)
         {
-            return GalleryImageRepository.Save(image);
+            GalleryImageRepository.Save(ref image);
+            return image;
         }
 
         public GalleryImage[] FindAllImages()

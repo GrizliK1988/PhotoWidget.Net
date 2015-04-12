@@ -1,66 +1,86 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Nest;
+using Npgsql;
 using PhotoWidget.Models;
+using PhotoWidget.Service.Exception;
+using PhotoWidget.Service.Helper.Attributes;
+using PhotoWidget.Service.Storage;
+using PhotoWidget.Service.Storage.DataMapper;
+using PhotoWidget.Service.Storage.DataMapper.Command;
 
 namespace PhotoWidget.Service.Repository
 {
-    public class GalleryRepository : IGalleryRepository<Gallery, uint>
+    public class GalleryRepository : IGalleryRepository<Gallery, int>
     {
-        private readonly ElasticClient _client;
+        private readonly IConnectionManager _connManager;
+        private readonly DbCommand<Gallery> _dbCommand = new DbCommand<Gallery>();
 
-        private const string ElasticIndex = "galleries";
-
-        public GalleryRepository()
+        public GalleryRepository(IConnectionManager connectionManager)
         {
-            var node = new Uri("http://localhost:9200");
-            var settings = new ConnectionSettings(node, ElasticIndex);
-            _client = new ElasticClient(settings);
+            _connManager = connectionManager;
         }
 
         public IEnumerable<Gallery> Get()
         {
-            return _client.Search<Gallery>(
-                s => s
-                    .Query(q => q.MatchAll())
-                    .SortAscending(o => o.CreatedDate)
-                ).Documents;
+            var galleries = new List<Gallery>();
+
+            var command = _dbCommand.Select.All();
+            command.Connection = _connManager.GetConnection();
+            command.Prepare();
+
+            var result = command.ExecuteReader();
+            if (!result.HasRows) {
+                return galleries;
+            }
+
+            while (result.Read()) {
+                galleries.Add(Mapper<Gallery>.MapResultToEntity(result));
+            }
+            result.Close();
+            return galleries;
         }
 
-        public Gallery Get(uint id)
+        public Gallery Get(int id)
         {
-            return _client.Search<Gallery>(
-                s => s.Query(q => q.Term(f => f.Id, id))
-                ).Documents.FirstOrDefault();
+            var pkProperty = ColumnHelper.GetColumnProperties<Gallery>().First(x => x.column.IsPrimaryKey);
+
+            var command = _dbCommand.Select.ByProperty(pkProperty.property, id);
+            command.Connection = _connManager.GetConnection();
+            command.Prepare();
+
+            var result = command.ExecuteReader();
+            if (!result.HasRows) {
+                return null;
+            }
+
+            result.Read();
+            var gallery = Mapper<Gallery>.MapResultToEntity(result);
+            result.Close();
+
+            return gallery;
         }
 
-        public Gallery Save(Gallery entity)
+        public void Save(ref Gallery entity)
         {
-            if (entity.Id > 0)
-            {
-                //Delete(entity);
-            }
-            else
-            {
-                var result = _client.Search<Gallery>(
-                    s => s.Aggregations(a => a.Max("id_max", m => m.Field(p => p.Id)))
-                    );
-                var maxId = result.Aggs.Max("id_max");
-                entity.Id = maxId != null && maxId.Value != null ? (uint)maxId.Value + 1 : 1;
-                entity.CreatedDate = DateTime.Now;
+            NpgsqlCommand command;
+            if (entity.Id == 0) {
+                command = _dbCommand.Insert.Single(entity);
+            } else {
+                command = _dbCommand.Update.ById(entity);
             }
 
-            entity.UpdatedDate = DateTime.Now;
-            var resultSave = _client.Index(entity);
+            command.Connection = _connManager.GetConnection();
+            command.Prepare();
 
-            if (resultSave.ServerError != null)
+            var result = command.ExecuteReader();
+            if (!result.HasRows)
             {
-                throw new Exception(resultSave.ServerError.Error);
+                throw new RepositoryException("Operation is failed");
             }
 
-            return entity;
+            result.Read();
+            Mapper<Gallery>.AggregateEntityFromReturningResult(ref entity, result);
+            result.Close();
         }
 
         public void Delete(Gallery entity)
@@ -68,9 +88,13 @@ namespace PhotoWidget.Service.Repository
             Delete(entity.Id);
         }
 
-        public void Delete(uint id)
+        public void Delete(int id)
         {
-            _client.Delete<Gallery>(id);
+            var command = _dbCommand.Delete.ById(id);
+            command.Connection = _connManager.GetConnection();
+            command.Prepare();
+
+            command.ExecuteNonQuery();
         }
     }
 }

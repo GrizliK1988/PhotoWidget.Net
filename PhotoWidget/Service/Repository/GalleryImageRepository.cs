@@ -44,7 +44,7 @@ namespace PhotoWidget.Service.Repository
             return response.Source;
         }
 
-        public GalleryImage Save(GalleryImage entity)
+        public void Save(ref GalleryImage entity)
         {
             if (entity.Id != null)
             {
@@ -57,8 +57,6 @@ namespace PhotoWidget.Service.Repository
 
             var response = _client.Index(entity);
             entity.Id = response.Id;
-
-            return entity;
         }
 
         public void Delete(GalleryImage entity)

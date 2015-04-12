@@ -12,7 +12,6 @@ using PhotoWidget.Models;
 using PhotoWidget.Service.Factory;
 using PhotoWidget.Service.Image.Galllery;
 using PhotoWidget.Service.Image.Storage;
-using PhotoWidget.Service.Repository;
 using DrawingImage = System.Drawing.Image;
 
 namespace PhotoWidget.Controllers

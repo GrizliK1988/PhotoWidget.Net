@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 using Ninject;
 using PhotoWidget.Models;
@@ -24,13 +23,15 @@ namespace PhotoWidget.Controllers
 
         public Gallery Post(Gallery gallery)
         {
-            return GalleryRepository.Save(gallery);
+            GalleryRepository.Save(ref gallery);
+            return gallery;
         }
 
-        public Gallery Put(uint id, Gallery gallery)
+        public Gallery Put(int id, Gallery gallery)
         {
             gallery.Id = id;
-            return GalleryRepository.Save(gallery);
+            GalleryRepository.Save(ref gallery);
+            return gallery;
         }
 
         public void Delete(uint id)

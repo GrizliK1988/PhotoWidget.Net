@@ -42,9 +42,21 @@
       <HintPath>..\packages\Elasticsearch.Net.1.1.2\lib\Elasticsearch.Net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener">
+      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.2.0.2\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.2.0.2\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Mono.Security.dll</HintPath>
     </Reference>
     <Reference Include="Nest">
       <HintPath>..\packages\NEST.1.1.2\lib\Nest.dll</HintPath>
@@ -62,10 +74,16 @@
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC3.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Cors">
@@ -84,12 +102,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.Cors">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.2\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -163,6 +184,8 @@
     <Compile Include="App_Start\NinjectDependencyResolver.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\Column.cs" />
+    <Compile Include="Attributes\Table.cs" />
     <Compile Include="Controllers\GalleryCodeController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\GalleryImageController.cs" />
@@ -179,8 +202,10 @@
     <Compile Include="Models\StoredGalleryImage.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\Exception\RepositoryException.cs" />
     <Compile Include="Service\Factory\GalleryImageFactory.cs" />
     <Compile Include="Service\Factory\ImageSizeFactory.cs" />
+    <Compile Include="Service\Helper\Attributes\ColumnHelper.cs" />
     <Compile Include="Service\Helper\ImageHelper.cs" />
     <Compile Include="Service\Image\Galllery\GalleryImageService.cs" />
     <Compile Include="Service\Image\Galllery\IGalleryImageService.cs" />
@@ -193,6 +218,20 @@
     <Compile Include="Service\Repository\IRepository.cs" />
     <Compile Include="Service\Serializer\ISerializer.cs" />
     <Compile Include="Service\Serializer\JsonSerializer.cs" />
+    <Compile Include="Service\Storage\ConnectionFactory.cs" />
+    <Compile Include="Service\Storage\ConnectionManager.cs" />
+    <Compile Include="Service\Storage\DataMapper\Command\DbCommand.cs" />
+    <Compile Include="Service\Storage\DataMapper\Command\DeleteCommand.cs" />
+    <Compile Include="Service\Storage\DataMapper\Command\UpdateCommand.cs" />
+    <Compile Include="Service\Storage\DataMapper\Command\InsertCommand.cs" />
+    <Compile Include="Service\Storage\DataMapper\Command\SelectCommand.cs" />
+    <Compile Include="Service\Storage\DataMapper\Mapper.cs" />
+    <Compile Include="Service\Storage\DataMapper\Query\DeleteQuery.cs" />
+    <Compile Include="Service\Storage\DataMapper\Query\UpdateQuery.cs" />
+    <Compile Include="Service\Storage\DataMapper\Query\InsertQuery.cs" />
+    <Compile Include="Service\Storage\DataMapper\Query\SelectQuery.cs" />
+    <Compile Include="Service\Storage\DataMapper\Query\SqlQuery.cs" />
+    <Compile Include="Service\Storage\IConnectionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
